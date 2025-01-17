@@ -3,7 +3,7 @@
 #
 cmake_minimum_required(VERSION 3.13)
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
 #
 # The pick build tools are a liuttle odd but make for a better cmake file below.
@@ -18,7 +18,8 @@ include(../../pico/pico-sdk/external/pico_sdk_import.cmake)
 # I personally have 10 or 12 Downrev versions of FreeRTOS installed on my workstation so that I never have to 
 # monkey with updating older projects.
 #
-set(FREERTOS_SRC_DIR ../../FreeRTOS-LTS/FreeRTOS/FreeRTOS-Kernel)
+set(FREERTOS_SRC_DIR ../../FreeRTOSv202212.01/FreeRTOS/Source)
+#set(FREERTOS_SRC_DIR ../../FreeRTOS-LTS/FreeRTOS/FreeRTOS-Kernel)
 
 #
 # Set the cmake 'Project'.  This line sets up the cmake target and does an implicent define of PROJECT_NAME
@@ -64,8 +65,8 @@ add_compile_options(-Wall
         -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
         -Wno-unused-function # we have some for the docs that aren't called
         -Wno-maybe-uninitialized
-        -Wno-unused-variable # Allow unused variables (I don't generlly like this but FreeRTOS has some)
-        -Wno-array-bounds    # pico libraries really blow this
+        #-Wno-unused-variable # Allow unused variables (I don't generlly like this but FreeRTOS has some)
+        #-Wno-array-bounds    # pico libraries really blow this
         )
 
 
@@ -83,7 +84,7 @@ add_library(freertos
         ${FREERTOS_SRC_DIR}/timers.c
         ${FREERTOS_SRC_DIR}/portable/MemMang/heap_3.c
         ${FREERTOS_SRC_DIR}/portable/GCC/ARM_CM0/port.c
-        ${FREERTOS_SRC_DIR}/portable/GCC/ARM_CM0/portasm.c
+        #${FREERTOS_SRC_DIR}/portable/GCC/ARM_CM0/portasm.c
 )
 
 #
@@ -93,8 +94,7 @@ target_include_directories(freertos PUBLIC
         .
         ${FREERTOS_SRC_DIR}/include
         ${FREERTOS_SRC_DIR}/portable/GCC/ARM_CM0
-) 
-       
+)        
 
 #
 # Add the long list of .c files that we have for lab2.
